@@ -1,0 +1,56 @@
+﻿<UserControl x:Class="EmployeeDataWpfApp.Views.StatusStatisticsControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:EmployeeDataWpfApp.Views"
+             xmlns:viewModel="clr-namespace:EmployeeDataWpfApp.ViewModels"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+
+    <Control.DataContext>
+        <viewModel:StatusStatisticsViewModel />
+    </Control.DataContext>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+
+        <StackPanel Orientation="Horizontal">
+            <Label>Status:</Label>
+            <ComboBox x:Name="statusComboBox"
+                      ItemsSource="{Binding StatusList}"
+                      SelectedItem="{Binding StatusComboBoxSelectItem}"
+                      DisplayMemberPath="Name"
+                      SelectedIndex="0"
+                      Width="100" Height="21" 
+                      VerticalAlignment="Top" Margin="0 5 0 0"
+                      ToolTip="{Binding (Validation.Errors)[0].ErrorContent, 
+                      RelativeSource={RelativeSource Self}}"/>
+
+            <Label>Date from:</Label>
+            <DatePicker x:Name="startDatePicker"
+                        SelectedDate="{Binding StartDatePickerSelectedDate}"
+                        Width="130" Height="23" 
+                        VerticalAlignment="Top" Margin="0 5 0 0" />
+
+            <Label>to:</Label>
+            <DatePicker x:Name="endDatePicker"
+                        SelectedDate="{Binding EndDatePickerSelectedDate}"
+                        Width="130" Height="23" 
+                        VerticalAlignment="Top" Margin="0 5 5 0" />
+        </StackPanel>
+
+        <DataGrid x:Name="statisticsList" ItemsSource="{Binding Statistics}" 
+                  Grid.Row="1" Margin="3 0 3 3" 
+                  AutoGenerateColumns="False" IsReadOnly="True">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Number of employees" Binding="{Binding Id}" />
+                <DataGridTextColumn Header="Employment" Binding="{Binding DateEmploy}" />
+                <DataGridTextColumn Header="Dismissal" Binding="{Binding DateUnemploy}" />
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+</UserControl>
