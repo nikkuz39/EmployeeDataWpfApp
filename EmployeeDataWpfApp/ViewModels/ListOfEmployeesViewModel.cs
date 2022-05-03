@@ -110,9 +110,20 @@ namespace EmployeeDataWpfApp.ViewModels
         {
             set
             {
-                searchLastName = value;
-                Persons = LoadAllPersons(statusId, departmentId, postId, searchLastName);
-                OnPropertyChanged("SearchLastName");
+                if (value.Length > 15)
+                {
+                    searchLastName = value.Remove(15);
+
+                    Persons = LoadAllPersons(statusId, departmentId, postId, searchLastName);
+                    OnPropertyChanged("SearchLastName");
+                }
+                else
+                {
+                    searchLastName = value;
+
+                    Persons = LoadAllPersons(statusId, departmentId, postId, searchLastName);
+                    OnPropertyChanged("SearchLastName");
+                }
             }
         }
 
