@@ -16,6 +16,8 @@ namespace EmployeeDataWpfApp.ViewModels
 {
     public class ListOfEmployeesViewModel : ObservableObj
     {
+        private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+
         private String GetDatabaseConnectionString()
         {
             IConfigurationRoot configuration = new ConfigurationBuilder()
@@ -26,8 +28,8 @@ namespace EmployeeDataWpfApp.ViewModels
             return configuration.GetConnectionString("DefaultConnection");
         }       
 
-        private List<Status> statusList;
-        public List<Status> StatusList
+        private List<Status>? statusList;
+        public List<Status>? StatusList
         {
             get { return statusList; }
             set
@@ -37,8 +39,8 @@ namespace EmployeeDataWpfApp.ViewModels
             }
         }
 
-        private List<Dep> departmentList;
-        public List<Dep> DepartmentList
+        private List<Dep>? departmentList;
+        public List<Dep>? DepartmentList
         {
             get { return departmentList; }
             set
@@ -48,8 +50,8 @@ namespace EmployeeDataWpfApp.ViewModels
             }
         }
 
-        private List<Post> postList;
-        public List<Post> PostList
+        private List<Post>? postList;
+        public List<Post>? PostList
         {
             get { return postList; }
             set
@@ -59,8 +61,8 @@ namespace EmployeeDataWpfApp.ViewModels
             }
         }
 
-        private IEnumerable<Person> persons;
-        public IEnumerable<Person> Persons
+        private IEnumerable<Person>? persons;
+        public IEnumerable<Person>? Persons
         {
             get { return persons; }
             set
@@ -70,7 +72,7 @@ namespace EmployeeDataWpfApp.ViewModels
             }
         }        
 
-        private int statusId;
+        private int statusId = 0;
         public Status StatusComboBoxSelectItem
         {
             set
@@ -81,7 +83,7 @@ namespace EmployeeDataWpfApp.ViewModels
             }
         }
 
-        private int departmentId;
+        private int departmentId = 0;
         public Dep DepartmentComboBoxSelectItem
         {
             set
@@ -92,7 +94,7 @@ namespace EmployeeDataWpfApp.ViewModels
             }
         }
 
-        private int postId;
+        private int postId = 0;
         public Post PostComboBoxSelectItem
         {
             set
@@ -103,7 +105,7 @@ namespace EmployeeDataWpfApp.ViewModels
             }
         }
 
-        private string searchLastName;
+        private string searchLastName = "";
         public string SearchLastName
         {
             set
@@ -126,8 +128,17 @@ namespace EmployeeDataWpfApp.ViewModels
         {
             using (CompanyContext context = new CompanyContext())
             {
-                StatusList = context.Statuses.AsNoTracking().ToList();
-                StatusList.Insert(0, new Status { Id = 0, Name = "All" });
+                try
+                {
+                    logger.Info("Call Method 'GetStatusList' / class 'ListOfEmployeesViewModel'");
+
+                    StatusList = context.Statuses.AsNoTracking().ToList();
+                    StatusList.Insert(0, new Status { Id = 0, Name = "All" });
+                }
+                catch (Exception ex)
+                {
+                    logger.Error(ex, "Method 'GetStatusList' / class 'ListOfEmployeesViewModel'");
+                }
             }
         }
 
@@ -135,8 +146,17 @@ namespace EmployeeDataWpfApp.ViewModels
         {
             using (CompanyContext context = new CompanyContext())
             {
-                DepartmentList = context.Deps.AsNoTracking().ToList();
-                DepartmentList.Insert(0, new Dep { Id = 0, Name = "All" });
+                try
+                {
+                    logger.Info("Call Method 'GetDepartmentList' / class 'ListOfEmployeesViewModel'");
+
+                    DepartmentList = context.Deps.AsNoTracking().ToList();
+                    DepartmentList.Insert(0, new Dep { Id = 0, Name = "All" });
+                }
+                catch (Exception ex)
+                {
+                    logger.Error(ex, "Method 'GetDepartmentList' / class 'ListOfEmployeesViewModel'");
+                }
             }
         }
 
@@ -144,8 +164,17 @@ namespace EmployeeDataWpfApp.ViewModels
         {
             using (CompanyContext context = new CompanyContext())
             {
-                PostList = context.Posts.AsNoTracking().ToList();
-                PostList.Insert(0, new Post { Id = 0, Name = "All" });
+                try
+                {
+                    logger.Info("Call Method 'GetPostList' / class 'ListOfEmployeesViewModel'");
+
+                    PostList = context.Posts.AsNoTracking().ToList();
+                    PostList.Insert(0, new Post { Id = 0, Name = "All" });
+                }
+                catch (Exception ex)
+                {
+                    logger.Error(ex, "Method 'GetPostList' / class 'ListOfEmployeesViewModel'");
+                }
             }
         }
 

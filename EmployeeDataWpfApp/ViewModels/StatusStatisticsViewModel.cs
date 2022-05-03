@@ -14,6 +14,8 @@ namespace EmployeeDataWpfApp.ViewModels
 {
     public class StatusStatisticsViewModel : ObservableObj
     {
+        private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+
         private String GetDatabaseConnectionString()
         {
             IConfigurationRoot configuration = new ConfigurationBuilder()
@@ -91,7 +93,16 @@ namespace EmployeeDataWpfApp.ViewModels
         {
             using (CompanyContext context = new CompanyContext())
             {
-                StatusList = context.Statuses.AsNoTracking().ToList();                
+                try
+                {
+                    logger.Info("Call Method 'GetStatusList' / class 'StatusStatisticsViewModel'");
+
+                    StatusList = context.Statuses.AsNoTracking().ToList();
+                }
+                catch(Exception ex)
+                {
+                    logger.Error(ex, "Method 'GetStatusList' / class 'StatusStatisticsViewModel'");
+                }
             }
         }
 
